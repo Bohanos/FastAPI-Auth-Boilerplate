@@ -1,0 +1,4 @@
+FastAPI
+uvicorn
+PyJWT
+pwdlib[argon2]
