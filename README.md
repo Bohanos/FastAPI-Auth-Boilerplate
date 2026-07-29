@@ -16,5 +16,5 @@ A modular, lightweight authentication starter template built with FastAPI. This 
 
 1. **Clone the repository**:
    ```bash
-   git clone [https://github.com/yourusername/FastAPI-Auth-Boilerplate.git](https://github.com/yourusername/FastAPI-Auth-Boilerplate.git)
+   git clone [https://github.com/Bohanos/FastAPI-Auth-Boilerplate.git](https://github.com/Bohanos/FastAPI-Auth-Boilerplate.git)
    cd FastAPI-Auth-Boilerplate
