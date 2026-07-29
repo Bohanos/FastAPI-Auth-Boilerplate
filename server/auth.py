@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pwdlib import PasswordHash
 import jwt
-
+from server.limiter import limiter
 from schemas import Register, Login
 
 router = APIRouter()
@@ -13,7 +13,8 @@ password_hash = PasswordHash.recommended()
 SECRET_KEY = "my-secret-key"
 
 @router.post("/register")
-def register(new_user: Register):
+@limiter.limit("5/minute")
+def register(request: Request, new_user: Register):
     for existing_user in users:
         if existing_user["username"] ==  new_user.username:
             raise HTTPException(
@@ -21,22 +22,23 @@ def register(new_user: Register):
                 detail=f"Username '{new_user.username}' already exists."
             )
         
-        hashed_password = password_hash.hash(new_user.password)
+    hashed_password = password_hash.hash(new_user.password)
 
-        users.append(
-            {
-                "username": new_user.username,
-                "password": hashed_password
-            }
-        )
-
-        return{
-            "message": "Registration successful"
+    users.append(
+        {
+            "username": new_user.username,
+            "password": hashed_password
         }
+    )
+
+    return{
+        "message": "Registration successful"
+    }
 
 
 @router.post("/Login")
-def login(user: Login):
+@limiter.limit("5/minute")
+def login(request: Request, user: Login):
     for saved_user in users:
 
         if saved_user["username"] == user.username:
